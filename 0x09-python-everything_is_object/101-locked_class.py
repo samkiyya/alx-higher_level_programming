@@ -1,7 +1,11 @@
 #!/usr/bin/python3
-""" LockedClass
-"""
+""" Locked class """
 
 
-class LockedClass:
-    __slots__= ['first_name']
+class LockedClass():
+    """No attribute creation unless attribute = firs_name"""
+    __slots__ = ['first_name']
+
+    def __init__(self):
+        """Init method"""
+        pass
