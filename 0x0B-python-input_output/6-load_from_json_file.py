@@ -1,16 +1,12 @@
 #!/usr/bin/python3
-
-"""Deserialize an JSON from a file"""
-
+'''
+Module that works with JSON files
+'''
 
 import json
 
 
 def load_from_json_file(filename):
-    """Create an object from JSON
-    Args:
-        filename(str) -> The filename holding JSON
-    """
-    if filename:
-        with open(filename, 'r', encoding="utf-8") as f:
-            return json.load(f)
+    ''' Create an object from JSON file '''
+    with open(filename, 'r') as open_file:
+        return json.load(open_file)
