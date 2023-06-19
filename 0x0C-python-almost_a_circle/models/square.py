@@ -1,57 +1,64 @@
 #!/usr/bin/python3
+"""Define Rectangle Class
 """
-This module implements a Square object
-"""
+
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
-    """Square implementation"""
+    """Module Representation of Square
+"""
 
-    def __init__(self, size: int, x=0, y=0, id=None):
-        """initialization
+    def __init__(self, size, x=0, y=0, id=None):
+        """Initialization a Square
         """
         super().__init__(size, size, x, y, id)
-        self.__size = size
 
     @property
-    def size(self) -> int:
-        """size getter
+    def size(self):
+        """module Square size getter
         """
-        return self.__size
+        return self.width
 
     @size.setter
-    def size(self, value: int):
-        """size setter
+    def size(self, value):
+        """module Square size setter
         """
-        self.check_type_value('width', value)
-        self.__size = value
         self.width = value
         self.height = value
 
-    def __str__(self) -> str:
-        """string representation"""
-        id = self.id
-        size = self.__size
-        x = self.x
-        y = self.y
-        return "[Square] ({}) {}/{} - {}".format(id, x, y, size)
+    def __str__(self):
+        """module string represation of square
+        """
+        return "[Square] ({:d}) {:d}/{:d} - {:d}".format(self.id,
+                                                         self.x,
+                                                         self.y,
+                                                         self.width)
 
     def update(self, *args, **kwargs):
-        """update arguments"""
-        attr = ['id', 'size', 'x', 'y']
-        if args:
-            for at, numb in zip(attr, args):
-                setattr(self, at, numb)
-        elif kwargs:
+        """module update square
+        """
+        if len(args):
+            for i, arg in enumerate(args):
+                if i == 0:
+                    self.id = arg
+                elif i == 1:
+                    self.size = arg
+                elif i == 2:
+                    self.x = arg
+                elif i == 3:
+                    self.y = arg
+        else:
             for key, value in kwargs.items():
-                if key in attr:
+                if hasattr(self, key) is True:
                     setattr(self, key, value)
 
-    def to_dictionary(self) -> dict:
-        """square to dictionary"""
-        id = self.id
-        size = self.__size
-        x = self.x
-        y = self.y
-        return {'id': id, 'x': x, 'size': size, 'y': y}
+    def to_dictionary(self):
+        """retrun dictonary
+        """
+        return {
+            "id": self.id,
+            "size": self.size,
+            "x": self.x,
+            "y": self.y
+        }

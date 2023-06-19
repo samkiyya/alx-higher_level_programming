@@ -1,123 +1,140 @@
 #!/usr/bin/python3
-"""
-This module implements a Rectangle object
-"""
+'''
+    Class Rectangle
+'''
 from models.base import Base
 
 
 class Rectangle(Base):
-    """Rectangle implementation
-    """
+    '''
+        Defining the Rectangle class
+        Inherits from:
+            Base
+    '''
 
-    def __init__(self, width: int, height: int, x=0, y=0, id=None):
-        """initialization
-        """
-        super().__init__(id)
-
+    def __init__(self, width, height, x=0, y=0, id=None):
         self.width = width
         self.height = height
         self.x = x
         self.y = y
-
-    def __str__(self) -> str:
-        """string representation
-        """
-        return "[Rectangle] ({}) {}/{} - {}/{}" \
-            .format(self.id, self.x, self.y, self.width, self.height)
-
-    def check_type_value(self, name:  str, value: object, greater_equal=False):
-        """type and value validation
-        """
-
-        if not isinstance(value, int):
-            raise TypeError("{} must be an integer".format(name))
-        if not greater_equal:
-            if value <= 0:
-                raise ValueError("{} must be > 0".format(name))
-        else:
-            if value < 0:
-                raise ValueError("{} must be >= 0".format(name))
+        super().__init__(id)
 
     @property
-    def width(self) -> int:
-        """width getter
-        """
+    def width(self):
+        '''
+            Returning private attribute
+        '''
         return self.__width
 
     @width.setter
-    def width(self, width: int):
-        """width setter
-        """
-        self.check_type_value('width', width)
-        self.__width = width
+    def width(self, value):
+        '''
+            Setting private attribute
+        '''
+        self.setter_validation("width", value)
+        self.__width = value
 
     @property
-    def height(self) -> int:
-        """height getter
-        """
+    def height(self):
+        '''
+            Returning private attribute
+        '''
         return self.__height
 
     @height.setter
-    def height(self, height: int):
-        """height setter
-        """
-        self.check_type_value('height', height)
-        self.__height = height
+    def height(self, value):
+        '''
+            Setting private attribute
+        '''
+        self.setter_validation("height", value)
+        self.__height = value
 
     @property
-    def x(self) -> int:
-        """x getter
-        """
+    def x(self):
+        '''
+            Returning private attribute
+        '''
         return self.__x
 
     @x.setter
-    def x(self, x: int):
-        """x setter
-        """
-        self.check_type_value('x', x, True)
-        self.__x = x
+    def x(self, value):
+        '''
+            Setting private attribute
+        '''
+        self.setter_validation("x", value)
+        self.__x = value
 
     @property
-    def y(self) -> int:
-        """y getter
-        """
+    def y(self):
+        '''
+            Returning private attribute
+        '''
         return self.__y
 
     @y.setter
-    def y(self, y: int):
-        """y setter
-        """
-        self.check_type_value('y', y, True)
-        self.__y = y
+    def y(self, value):
+        '''
+            Setting private attribute
+        '''
+        self.setter_validation("y", value)
+        self.__y = value
 
-    def area(self) -> int:
-        """area
-        """
-        return self.width * self.height
+    def area(self):
+        '''
+            Returns the area of the rectangle
+        '''
+        return (self.height * self.width)
 
     def display(self):
-        """prints # shape of the rectangle
-        """
-        print('\n'*self.y, end='')
-        for l in range(self.height):
-            print(' '*self.x + '#'*self.width)
+        '''
+            Prints to stdout the representation of the rectangle
+        '''
+        rectangle = ""
+        print("\n" * self.y, end="")
+        for i in range(self.height):
+            rectangle += (" " * self.x) + ("#" * self.width) + "\n"
+        print(rectangle, end="")
 
     def update(self, *args, **kwargs):
-        """update rectangle attributes
-        """
+        '''
+            Updates the arguments in the class
+        '''
+        if len(args) == 0:
+            for key, val in kwargs.items():
+                self.__setattr__(key, val)
+            return
+        try:
+            self.id = args[0]
+            self.width = args[1]
+            self.height = args[2]
+            self.x = args[3]
+            self.y = args[4]
+        except IndexError:
+            pass
 
-        expect = (self.id, self.width, self.height, self.x, self.y)
-        if args != ():
-            self.id, self.width, self.height, self.x, self.y = \
-                args + expect[len(args):len(expect)]
-        elif kwargs:
-            for (name, value) in kwargs.items():
-                setattr(self, name, value)
+    def to_dictionary(self):
+        '''
+            Returns a dictionary representation of this class
+        '''
+        return {'x': getattr(self, "x"),
+                'y': getattr(self, "y"),
+                'id': getattr(self, "id"),
+                'height': getattr(self, "height"),
+                'width': getattr(self, "width")}
 
-    def to_dictionary(self) -> int:
-        """rectangle to dictionary
-        """
+    @staticmethod
+    def setter_validation(attribute, value):
+        if type(value) != int:
+            raise TypeError("{} must be an integer".format(attribute))
+        if attribute == "x" or attribute == "y":
+            if value < 0:
+                raise ValueError("{} must be >= 0".format(attribute))
+        elif value <= 0:
+            raise ValueError("{} must be > 0".format(attribute))
 
-        return {
-            'x': self.x, 'y': self.y, 'id': self.id,
-            'height': self.height, 'width': self.width}
+    def __str__(self):
+        '''
+            Overwritting the str method
+        '''
+        return "[Rectangle] ({}) {}/{} - {}/{}".format(self.id, self.x, self.y,
+                                                       self.width, self.height)
